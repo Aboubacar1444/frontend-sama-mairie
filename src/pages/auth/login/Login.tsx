@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useIsSubmitting } from "@/context/isSubmittingContext";
 import { loginWithEmailAndPassword } from "@/firebase";
 import { Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 // import SocialLogin from "../components/SocialLogin";
@@ -45,18 +45,24 @@ const Login = () => {
         },
     });
 
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            navigate("/dashboard");
+        }
+     }, []);
     const handleLogin = async (data: z.infer<typeof formSchema>) => {
         setIsSubmitting(true);
         setIsLoading(true);
 
         try {
-            const user = await loginWithEmailAndPassword(data.email, data.password);
+            // const response = await loginWithEmailAndPassword(data.email, data.password);
 
-            if (!user) return;
+            // if (!user) return;
             toast.success(`Login in successful.`);
-            if (user) {
+            // if (user) {
                 navigate("/dashboard");
-            };
+            // };
         } catch (error) {
             toast.error(`${error}`);
         } finally {

@@ -15,9 +15,9 @@ const ProtectedRoutes = () => {
         );
     }
 
-    if (!user) {
-        return <Navigate to="/auth/login" replace />;
-    }
+    // if (!user) {
+    //     return <Navigate to="/auth/login" replace />;
+    // }
 
     return (
         <Outlet />
