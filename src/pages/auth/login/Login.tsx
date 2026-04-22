@@ -9,7 +9,7 @@ import { Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react';
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import SocialLogin from "../components/SocialLogin";
+// import SocialLogin from "../components/SocialLogin";
 
 import {
     Field,
@@ -23,11 +23,11 @@ import * as z from "zod";
 
 
 const formSchema = z.object({
-    email: z.string().email("Enter a valid email address."),
+    email: z.string().email("Entrer un email valide."),
     password: z
         .string()
-        .min(6, "Password must be at least 6 characters.")
-        .max(20, "Password must be at most 10 characters."),
+        .min(6, "Le mot de passe doit contenir au moins 6 caractères.")
+        .max(20, "Le mot de passe doit contenir au plus 20 caractères."),
 });
 
 
@@ -73,14 +73,15 @@ const Login = () => {
                     <img src={AuthImage} alt="Image" />
                 </div>
             </div>
-            <div className="lg:w-1/2 py-8 px-6 flex flex-col justify-center">
+            <div className="lg:w-1/2 py-6 px-6 flex flex-col justify-center">
                 <div className="lg:max-w-[464px] mx-auto w-full">
                     <div>
                         <Link to="/dashboard" className="mb-2.5 max-w-[290px] inline-block">
                             <ThemeLogo />
                         </Link>
-                        <h4 className="mb-3">Sign In to your Account</h4>
-                        <p className="mb-8 text-secondary-light text-lg">Welcome back! please enter your detail</p>
+                        {/* <h4 className="mb-3">Sign In to your Account</h4> */}
+                        <h4 className="mb-3">Connectez-vous à votre compte</h4>
+                        <p className="mb-8 text-secondary-light text-lg text-muted-foreground">Veuillez renseigner vos coordonnées de connexion.</p>
                     </div>
 
                     <form action="#" onSubmit={form.handleSubmit(handleLogin)}>
@@ -156,14 +157,14 @@ const Login = () => {
                                     className="border border-neutral-400 w-4.5 h-4.5"
                                 />
                                 <label htmlFor="remember" className="text-sm">
-                                    Remember me
+                                    Se souvenir de moi
                                 </label>
                             </div>
                             <Link
                                 to="/auth/forgot-password"
                                 className="text-primary font-medium hover:underline text-sm"
                             >
-                                Forgot Password?
+                                Mot de passe oublié?
                             </Link>
                         </div>
 
@@ -173,13 +174,13 @@ const Login = () => {
                             disabled={isSubmitting}
                         >
                             {isLoading && <Loader2 className="animate-spin h-4.5 w-4.5 mr-2" />}
-                            {isLoading ? "Signing in..." : "Sign In"}
+                            {isLoading ? "Connection en cours..." : "Se connecter"}
                         </Button>
 
                         <div className="mt-8 center-border-horizontal text-center relative before:absolute before:w-full before:h-[1px] before:top-1/2 before:-translate-y-1/2 before:bg-neutral-300 before:start-0">
-                            <span className="bg-white dark:bg-slate-900 z-[2] relative px-4">Or sign in with</span>
+                            <span className="bg-white dark:bg-slate-900 z-[2] relative px-4"></span>
                         </div>
-                        <SocialLogin />
+                        {/* <SocialLogin />  */}
 
                         <Button
                             className="font-semibold text-neutral-600 hover:text-neutral-600 dark:text-neutral-200 py-6 px-2 w-1/2 border border-neutral-600/50 rounded-xl text-sm flex items-center justify-center gap-3 line-height-1 hover:border-blue-400 hover:bg-primary/10 disabled:opacity-60 mt-4 w-full"
@@ -192,13 +193,13 @@ const Login = () => {
                                 form.setValue("password", "123456");
                             }}
                         >
-                            Use Demo Credentials
+                            Utiliser données de connexion de démonstration
                         </Button>
 
 
-                        <div className="mt-8 text-center text-sm">
+                        {/* <div className="mt-8 text-center text-sm">
                             <p className="mb-0">Don't have an account? <Link to="/auth/register" className="text-primary font-semibold hover:underline">Sign Up</Link></p>
-                        </div>
+                        </div> */}
                     </form>
                 </div>
             </div>
