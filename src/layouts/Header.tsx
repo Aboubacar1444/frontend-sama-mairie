@@ -16,7 +16,7 @@ const Header = () => {
                     {/* <SidebarToggle /> */}
                     <SidebarTrigger className={cn(`!p-0 h-auto w-auto !bg-transparent cursor-pointer text-neutral-700 hover:text-neutral-900 dark:text-neutral-200`)} />
 
-                    <SearchBox /> 
+                    {/* <SearchBox />  */}
                 </div>
             </div>
 
@@ -27,15 +27,15 @@ const Header = () => {
                     <ModeToggle />
 
                     {/* Language Dropdown Start   */}
-                    <LanguageSelect />
+                    {/* <LanguageSelect /> */}
                     {/* Language Dropdown End   */}
 
                     {/* Message Dropdown Start   */}
-                    <MessageDropdown />
+                    {/* <MessageDropdown /> */}
                     {/* Message Dropdown End   */}
 
                     {/* Notification Start   */}
-                    <NotificationDropdown />
+                    {/* <NotificationDropdown /> */}
                     {/* Notification End   */}
 
                     {/* Profile dropdown start */}

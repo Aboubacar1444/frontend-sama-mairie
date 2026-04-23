@@ -83,6 +83,36 @@ export const data = {
         },
       ],
     },
+    // MY SIDEBAR ITEMS //
+    {
+      label: "Administration",
+    },
+    {
+      title: "Utilisateurs",
+      url: "/users-list",
+      icon: UsersRound,
+    },
+    {
+      title: "Categories",
+      url: "/categories-list",
+      icon: Boxes,
+    },
+    {
+      title: "Récouvrés",
+      url: "/owners-list",
+      icon: StickyNote,
+    },
+    {
+      title: "Taxes",
+      url: "/taxes-list",
+      icon: ChartPie,
+    },
+    {
+      title:"Activités",
+      url: "/business-list",
+      icon: Component,
+    },
+    // END OF MY SIDEBAR ITEMS 
     {
       label: "Application",
     },
@@ -101,6 +131,7 @@ export const data = {
       url: "/calendar",
       icon: CalendarDays,
     },
+        
     {
       label: "UI Elements",
     },

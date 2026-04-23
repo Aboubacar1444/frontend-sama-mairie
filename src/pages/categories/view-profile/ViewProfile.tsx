@@ -5,76 +5,42 @@ import EditProfileTabContent from "./components/EditProfileTabContent";
 import ViewProfileSidebar from "./components/ViewProfileSidebar";
 import ChangePasswordTabContent from "./components/ChangePasswordTabContent";
 import NotificationPasswordTabContent from "./components/NotificationPasswordTabContent";
-import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
-import type { UserType } from "@/types/user";
-import { useEffect, useState } from "react";
-import { getUserById } from "@/apis/users-service";
-import { is } from "date-fns/locale";
 
 const ViewProfile = () => {
-    const navigate = useNavigate();
-    const [params] = useSearchParams();
-    const userId = params.get("userId");
-    const isConnectedUser = params.get("isconnecteduser");
-
-    // if (!userId) {
-    //     return <Navigate to="/users-list" />;
-    // }
-    const [user, setUser] = useState<UserType>({} as UserType);
-    const fetchUserData = async (id: string) => {
-        if (isConnectedUser)
-            setUser(JSON.parse(localStorage.getItem("user") || "{}"));
-
-        const response = await getUserById(parseInt(id));
-        console.log(response);
-        if (response.status === 1 && response.body) {
-            setUser(response.body as any);
-            return user;
-        }
-        
-        return user;
-
-    }
-    useEffect(() => {
-        if (userId) {
-            fetchUserData(userId);
-        }
-    }, [userId]);
-
     return (
         <>
-            <Breadcrumb title="Details de l'utilisateur" text="Details de l'utilisateur" />
+            <Breadcrumb title="View Profile" text="View Profile" />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div className="col-span-12 lg:col-span-4">
-                    <ViewProfileSidebar user={user} />
+                    <ViewProfileSidebar />
                 </div>
 
                 <div className="col-span-12 lg:col-span-8">
                     <Card className="card">
                         <CardContent className="px-0">
-                            <Tabs defaultValue="Details de l'utilisateur" className="gap-4">
+                            <Tabs defaultValue="editProfile" className="gap-4">
                                 <TabsList className='active-gradient bg-transparent dark:bg-transparent rounded-none h-[50px]'>
                                     <TabsTrigger value="editProfile" className='py-2.5 px-4 font-semibold text-sm inline-flex items-center gap-3 dark:bg-transparent text-neutral-600 hover:text-primary dark:text-white dark:hover:text-blue-500 data-[state=active]:bg-gradient border-0 border-t-2 border-neutral-200 dark:border-neutral-500 data-[state=active]:border-primary dark:data-[state=active]:border-primary rounded-[0] data-[state=active]:shadow-none cursor-pointer'>
-                                        Modifier mes informations
+                                        Edit Profile
                                     </TabsTrigger>
                                     <TabsTrigger value="changePassword" className='py-2.5 px-4 font-semibold text-sm inline-flex items-center gap-3 dark:bg-transparent text-neutral-600 hover:text-primary dark:text-white dark:hover:text-blue-500 data-[state=active]:bg-gradient border-0 border-t-2 border-neutral-200 dark:border-neutral-500 data-[state=active]:border-primary dark:data-[state=active]:border-primary rounded-[0] data-[state=active]:shadow-none cursor-pointer'>
-                                        Changer le mot de passe
+                                        Change Password
                                     </TabsTrigger>
-                                    {/* <TabsTrigger value="NotificationPassword" className='py-2.5 px-4 font-semibold text-sm inline-flex items-center gap-3 dark:bg-transparent text-neutral-600 hover:text-primary dark:text-white dark:hover:text-blue-500 data-[state=active]:bg-gradient border-0 border-t-2 border-neutral-200 dark:border-neutral-500 data-[state=active]:border-primary dark:data-[state=active]:border-primary rounded-[0] data-[state=active]:shadow-none cursor-pointer'>
+                                    <TabsTrigger value="NotificationPassword" className='py-2.5 px-4 font-semibold text-sm inline-flex items-center gap-3 dark:bg-transparent text-neutral-600 hover:text-primary dark:text-white dark:hover:text-blue-500 data-[state=active]:bg-gradient border-0 border-t-2 border-neutral-200 dark:border-neutral-500 data-[state=active]:border-primary dark:data-[state=active]:border-primary rounded-[0] data-[state=active]:shadow-none cursor-pointer'>
                                         Notification Password
-                                    </TabsTrigger> */}
+                                    </TabsTrigger>
                                 </TabsList>
 
                                 <TabsContent value="editProfile">
-                                    <EditProfileTabContent user={user} />
+                                    <EditProfileTabContent />
                                 </TabsContent>
                                 <TabsContent value="changePassword">
                                     <ChangePasswordTabContent />
                                 </TabsContent>
-                                {/* <TabsContent value="NotificationPassword">
+                                <TabsContent value="NotificationPassword">
                                     <NotificationPasswordTabContent />
-                                </TabsContent> */}
+                                </TabsContent>
                             </Tabs>
                         </CardContent>
                     </Card>

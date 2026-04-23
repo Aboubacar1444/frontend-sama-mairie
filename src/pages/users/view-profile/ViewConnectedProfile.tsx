@@ -8,38 +8,24 @@ import NotificationPasswordTabContent from "./components/NotificationPasswordTab
 import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import type { UserType } from "@/types/user";
 import { useEffect, useState } from "react";
-import { getUserById } from "@/apis/users-service";
-import { is } from "date-fns/locale";
 
-const ViewProfile = () => {
+
+const ViewConnectedProfile = () => {
+    const [user, setUser] = useState<UserType>({} as UserType);
+
     const navigate = useNavigate();
     const [params] = useSearchParams();
     const userId = params.get("userId");
-    const isConnectedUser = params.get("isconnecteduser");
-
-    // if (!userId) {
-    //     return <Navigate to="/users-list" />;
+    const connectedUser = JSON.parse(localStorage.getItem("user") || "{}") as UserType;
+    // if (!connectedUser || Object.keys(connectedUser).length === 0) {
+    //     return <Navigate to="/auth/login" />;
     // }
-    const [user, setUser] = useState<UserType>({} as UserType);
     const fetchUserData = async (id: string) => {
-        if (isConnectedUser)
-            setUser(JSON.parse(localStorage.getItem("user") || "{}"));
-
-        const response = await getUserById(parseInt(id));
-        console.log(response);
-        if (response.status === 1 && response.body) {
-            setUser(response.body as any);
-            return user;
-        }
-        
-        return user;
-
+         setUser(connectedUser);
     }
     useEffect(() => {
-        if (userId) {
-            fetchUserData(userId);
-        }
-    }, [userId]);
+        userId && fetchUserData(userId);
+    }, []);
 
     return (
         <>
@@ -85,4 +71,4 @@ const ViewProfile = () => {
     );
 };
 
-export default ViewProfile;
+export default ViewConnectedProfile;

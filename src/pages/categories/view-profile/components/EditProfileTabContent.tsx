@@ -4,9 +4,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from '@/components/ui/textarea';
 import { handleProfileUpdate } from './actions/handleProfileUpdate';
 import AvatarUpload from './AvatarUpload';
-import type { UserType } from '@/types/user';
 
-const EditProfileTabContent = ({ user }: { user: UserType }) => {
+const EditProfileTabContent = () => {
     return (
         <div>
             <h6 className="text-base text-neutral-600 dark:text-neutral-200 mb-4">Profile Image</h6>
@@ -19,7 +18,7 @@ const EditProfileTabContent = ({ user }: { user: UserType }) => {
                     <div className="col-span-12 sm:col-span-6">
                         <div className="mb-5">
                             <Label htmlFor="name" className="inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2">
-                                Nom complet <span className="text-red-600">*</span>
+                                Full Name <span className="text-red-600">*</span>
                             </Label>
                             <Input name="name" type="text" id="name" placeholder="Enter Full Name" required />
                         </div>

@@ -1,3 +1,4 @@
+import { logout } from "@/apis/auth-service";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -6,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { auth, getUserProfile } from "@/firebase";
 import { cn } from "@/lib/utils";
+import type { UserType } from "@/types/user";
 import { signOut } from "firebase/auth";
 import { Loader2, LogOutIcon, Mail, Settings, User } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -13,37 +15,33 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-interface UserProfile {
-  username?: string;
-}
+
 
 const ProfileDropdown = () => {
   const navigate = useNavigate();
   const [loggingOut, setLoggingOut] = useState(false);
   const [user, loading, error] = useAuthState(auth);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-
+  const [profile, setProfile] = useState<UserType | null>(null);
+  
   const handleLogout = () => {
     setTimeout(() => {
       setLoggingOut(true);
-      signOut(auth).then(() => {
+      const response:any = async () => await logout();
+      if (response.status === 1) {
         navigate('/auth/login');
-        toast.success('You logged out successfully.')
-      }).catch((error) => {
-        console.log(error);
-      });
-    }, 1000);
+        toast.success(response.message);
+      }
+      else {
+        toast.error(response.message);
+      }
+    }, 3000);
   }
 
 
   // Set User info
   useEffect(() => {
-    if (user?.uid) {
-      getUserProfile(user.uid).then((data) => {
-        setProfile(data as UserProfile);
-      });
-    }
-  }, [user]);
+    setProfile(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "{}") : null);
+  }, [profile]);
 
 
   if (loading) {
@@ -77,7 +75,7 @@ const ProfileDropdown = () => {
             <img src={user.photoURL} className="rounded-full" />
           ) : (
             <>
-              {profile?.username?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"}
+              {profile?.firstname?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"}
             </>
           )}
         </Button>
@@ -91,7 +89,7 @@ const ProfileDropdown = () => {
         <div className="py-3 px-4 rounded-lg bg-primary/10 dark:bg-primar flex items-center justify-between">
           <div>
             <h6 className="text-lg text-neutral-900 dark:text-white font-semibold mb-0">
-              {profile?.username || user?.displayName || "User Name"}
+              {profile?.firstname || user?.displayName || "User Name"}
             </h6>
             <span className="text-sm text-neutral-500 dark:text-neutral-300">
               Admin
@@ -103,35 +101,35 @@ const ProfileDropdown = () => {
           <ul className="flex flex-col gap-3">
             <li className="flex">
               <Link
-                to="/view-profile"
+                to={`/view-my-profile/${profile?.id}`}
                 className="text-black dark:text-white hover:text-primary dark:hover:text-primary flex items-center gap-3 w-full"
               >
-                <User className="w-5 h-5" /> My Profile
+                <User className="w-5 h-5" /> Mon profil
               </Link>
             </li>
-            <li className="flex">
+            {/* <li className="flex">
               <Link
                 to="/email"
                 className="text-black dark:text-white hover:text-primary dark:hover:text-primary flex items-center gap-3 w-full"
               >
                 <Mail className="w-5 h-5" /> Inbox
               </Link>
-            </li>
-            <li className="flex">
+            </li> */}
+            {/* <li className="flex">
               <Link
                 to="/company"
                 className="text-black dark:text-white hover:text-primary dark:hover:text-primary flex items-center gap-3 w-full"
               >
                 <Settings className="w-5 h-5" /> Settings
               </Link>
-            </li>
+            </li> */}
             <li className="flex ms-[2px]">
               <Button
                 variant="ghost"
                 className={`!p-0 h-auto w-full justify-start font-normal !bg-transparent cursor-pointer dark:text-neutral-200 flex items-center gap-3 text-[16px] hover:text-red-600 focus:text-red-600 ${loggingOut ? 'text-red-600 focus:text-red-600' : 'text-black'}`}
                 onClick={handleLogout}>
                 <LogOutIcon className="size-5" />
-                {loggingOut ? 'Logging out...' : "Logout"}
+                {loggingOut ? 'Deconnexion...' : "Se deconnecter"}
               </Button>
             </li>
           </ul>
