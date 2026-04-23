@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
+import { login } from "@/apis/auth-service";
 
 
 const formSchema = z.object({
@@ -56,15 +57,20 @@ const Login = () => {
         setIsLoading(true);
 
         try {
-            // const response = await loginWithEmailAndPassword(data.email, data.password);
+            const response = await login(data.email, data.password);
+            
+                
+            if (response.status === 0){
+                toast.error(response.message);
 
-            // if (!user) return;
-            toast.success(`Login in successful.`);
-            // if (user) {
+            } 
+            
+            if (response.status === 1) {
+                toast.success(response.message || "Connexion réussie !");
                 navigate("/dashboard");
-            // };
+            };
         } catch (error) {
-            toast.error(`${error}`);
+            toast.error('Erreur de connexion. Vérifiez vos identifiants ou réessayez plus tard.');
         } finally {
             setIsSubmitting(false);
             setIsLoading(false);

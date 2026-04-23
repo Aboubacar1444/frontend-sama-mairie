@@ -4,7 +4,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoutes = () => {
-    const [user, loading] = useAuthState(auth);
+    const token = localStorage.getItem("token");
+    const [loading] = useAuthState(auth);
 
     if (loading) {
         return (
@@ -15,9 +16,9 @@ const ProtectedRoutes = () => {
         );
     }
 
-    // if (!user) {
-    //     return <Navigate to="/auth/login" replace />;
-    // }
+    if (!token) {
+        return <Navigate to="/auth/login" replace />;
+    }
 
     return (
         <Outlet />

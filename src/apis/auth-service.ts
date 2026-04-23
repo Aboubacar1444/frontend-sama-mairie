@@ -1,20 +1,21 @@
 import api from "./axios-config";
+import axios from "axios";
 
 
 export const login = async (email: string, password: string) => {
-    try {
-        const response = await api.post('/users/login', { email, password});
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const data = { username: email, password: password };
+    
+    const response = await axios.post(`${BASE_URL}/login_check`, data);
+
+    if(response.data.status === 1){
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data));
         
-        console.log(response);
-        
-        localStorage.setItem('token', response.data.body.meta.token);
-        localStorage.setItem('user', JSON.stringify(response.data.body));
-       
-        return response.data;
-    } 
-    catch (error: any) {
-        return error.response.data;
     }
+           
+    return response.data;
+    
 }
 
 export const logout = async () => {

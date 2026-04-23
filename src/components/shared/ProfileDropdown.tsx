@@ -23,10 +23,10 @@ const ProfileDropdown = () => {
   const [user, loading, error] = useAuthState(auth);
   const [profile, setProfile] = useState<UserType | null>(null);
   
-  const handleLogout = () => {
-    setTimeout(() => {
+  const handleLogout =  () => {
+    setTimeout(async () => {
       setLoggingOut(true);
-      const response:any = async () => await logout();
+      const response:any = await logout();
       if (response.status === 1) {
         navigate('/auth/login');
         toast.success(response.message);
@@ -34,14 +34,14 @@ const ProfileDropdown = () => {
       else {
         toast.error(response.message);
       }
-    }, 3000);
+    }, 1000);
   }
 
 
   // Set User info
   useEffect(() => {
     setProfile(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "{}") : null);
-  }, [profile]);
+  }, []);
 
 
   if (loading) {

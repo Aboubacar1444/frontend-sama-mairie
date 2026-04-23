@@ -4,14 +4,23 @@ import { type UserType } from "@/types/user";
 export interface UserResponse {
     status: number,
     message: string,
-    body: UserType | UserType[] | null,
-    meta?: {
-        token?: string
+    body: {
+       items: UserType[] | UserType | null,
+       currentPageNumber?: number,
+       totalItemCount?: number,
+       itemPerPage?: number,
+       totalPage?: number,
     }
+    
 }
-export const getUsers = async (): Promise<UserResponse> => {
+export interface UserRequest {
+    page?: number
+    limit?: number
+    id?: number,
+}
+export const getUsers = async (request: UserRequest): Promise<UserResponse> => {
     try {
-        const response = await api.get('/users');
+        const response = await api.post('/users/list', request);
         return response.data;
     } 
     catch (error: any) {
@@ -19,9 +28,9 @@ export const getUsers = async (): Promise<UserResponse> => {
     }
 }
 
-export const getUserById = async (id: number): Promise<UserResponse> => {
+export const getUserById = async (request: UserRequest): Promise<UserResponse> => {
     try {
-        const response = await api.get(`/users/${id}`);
+        const response = await api.post(`/users/list/${request.id}`);
         return response.data;
     } 
     catch (error: any) {
