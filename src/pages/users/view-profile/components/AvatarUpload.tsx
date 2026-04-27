@@ -4,19 +4,26 @@ import { Label } from "@/components/ui/label";
 import { Camera } from "lucide-react";
 import React, { useRef, useState } from "react";
 
-const AvatarUpload = () => {
+interface AvatarUploadProps {
+    onFileChange?: (file: File | null) => void;
+}
+
+const AvatarUpload: React.FC<AvatarUploadProps> = ({ onFileChange }) => {
     const [imagePreview, setImagePreview] = useState<string>(DefaultUploadedImage);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+        const file = e.target.files?.[0] || null;
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreview(reader.result as string);
             };
             reader.readAsDataURL(file);
+        } else {
+            setImagePreview(DefaultUploadedImage);
         }
+        onFileChange?.(file);
     };
 
     return (

@@ -10,6 +10,7 @@ import {
   Settings,
   ShieldCheck,
   StickyNote,
+  Users,
   UsersRound,
 } from "lucide-react";
 
@@ -88,7 +89,7 @@ export const data = {
       label: "Administration",
     },
     {
-      title: "Utilisateurs",
+      title: "Agents",
       url: "/users-list",
       icon: UsersRound,
     },
@@ -98,9 +99,9 @@ export const data = {
       icon: Boxes,
     },
     {
-      title: "Récouvrés",
+      title: "Contribuables",
       url: "/owners-list",
-      icon: StickyNote,
+      icon: Users,
     },
     {
       title: "Taxes",

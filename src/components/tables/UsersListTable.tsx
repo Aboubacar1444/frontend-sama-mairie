@@ -16,7 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 
-
+const IMG_BASE_URL = import.meta.env.VITE_IMAGE_BASE_URL || "http://localhost:3000";
 
 export default function UsersListTable({userList}: {userList?: UserType[]}) {
     const navigate = useNavigate();
@@ -25,6 +25,7 @@ export default function UsersListTable({userList}: {userList?: UserType[]}) {
             <TableHeader>
                 <TableRow className="bg-neutral-200 dark:bg-slate-700 text-center">
                     <TableHead className="px-4 h-12 text-center bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 first:border-s last:border-e dark:border-slate-600 rounded-tl-lg w-[80px]">Nº</TableHead>
+                    <TableHead className="px-4 h-12 text-center bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 first:border-s last:border-e dark:border-slate-600 rounded-tl-lg w-[80px]">Photo</TableHead>
                     <TableHead className="px-4 h-12 text-center bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 first:border-s last:border-e dark:border-slate-600 ">Prénom & Nom</TableHead>
                     <TableHead className="px-4 h-12 text-center bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 first:border-s last:border-e dark:border-slate-600 ">Email</TableHead>
                     <TableHead className="px-4 h-12 text-center bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 first:border-s last:border-e dark:border-slate-600 ">Nº. Téléphone</TableHead>
@@ -42,24 +43,32 @@ export default function UsersListTable({userList}: {userList?: UserType[]}) {
                             <TableCell
                                 className={`py-4 px-4 border-b text-center first:border-s last:border-e border-neutral-200 dark:border-slate-600 ${isLast ? "rounded-bl-lg" : ""
                                     }`}
-                            >{user.id}</TableCell>
+                            >{user.id}
+                            </TableCell>
                             <TableCell
-                                className={`py-4 px-4 border-b text-center first:border-s last:border-e border-neutral-200 dark:border-slate-600 ${isLast ? "rounded-bl-lg" : ""
-                                    }`}
-                            >{user.firstname + " " + user.lastname}</TableCell>
-                            {/* <TableCell
                                 className={`py-4 px-4 border-b text-center first:border-s last:border-e border-neutral-200 dark:border-slate-600 ${isLast ? "rounded-bl-lg" : ""
                                     }`}
                             >
                                 <div className="flex items-center gap-2">
-                                    <img
-                                        src={user.photo || "/default-avatar.png"}
-                                        alt={user.firstname + " " + user.lastname}
-                                        className="w-10 h-10 rounded-full object-cover"
-                                    />
-                                    <span>{user.firstname} {user.lastname}</span>
+                                    {
+                                        user.photo ? (
+                                            <img
+                                                src={IMG_BASE_URL + "/" + user.photo}
+                                                alt={user.firstname + " " + user.lastname}
+                                                className="w-10 h-10 rounded-full object-cover"
+                                                referrerPolicy="no-referrer"
+                                            />
+                                        ) : (
+                                            <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center"></div>
+                                        )
+                                    }
                                 </div>
-                            </TableCell> */}
+                            </TableCell>
+                            <TableCell
+                                className={`py-4 px-4 border-b text-center first:border-s last:border-e border-neutral-200 dark:border-slate-600 ${isLast ? "rounded-bl-lg" : ""
+                                    }`}
+                            >{user.firstname + " " + user.lastname}</TableCell>
+                            
                             <TableCell
                                 className={`py-4 px-4 border-b text-center first:border-s last:border-e border-neutral-200 dark:border-slate-600 ${isLast ? "rounded-bl-lg" : ""
                                     }`}
