@@ -1,9 +1,5 @@
 import { ModeToggle } from "@/components/ModeToggle";
-import LanguageSelect from "@/components/shared/LanguageSelect";
-import MessageDropdown from "@/components/shared/MessageDropdown";
-import NotificationDropdown from "@/components/shared/NotificationDropdown";
 import ProfileDropdown from "@/components/shared/ProfileDropdown";
-import SearchBox from "@/components/shared/SearchBox";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 

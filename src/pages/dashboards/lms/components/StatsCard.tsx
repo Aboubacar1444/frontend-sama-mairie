@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
-import { DollarSign, UsersRound, Youtube } from "lucide-react";
+import { DollarSign, UsersRound, Video } from "lucide-react";
 
 export interface StatCardData {
   id: number;
@@ -34,7 +34,7 @@ const statsData: StatCardData[] = [
     value: "420",
     difference: "+30",
     changeType: "This Month",
-    icon: Youtube,
+    icon: Video,
     iconBgColor: "bg-white dark:bg-neutral-900",
     textColor: "text-violet-600 dark:text-violet-600",
     gradientFrom: "from-[#ecddff4d] dark:from-[#ecddff17]",

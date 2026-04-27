@@ -9,17 +9,15 @@ import { useLoading } from "@/context/LoadingContext";
 import Breadcrumb from "@/layouts/Breadcrumb";
 import { cn } from "@/lib/utils";
 import type { UserType } from "@/types/user";
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Plus, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 
 const UsersList = () => {
     const [UserList, setUserList] = useState<UserType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalItemCount, setTotalItemCount] = useState(0);
-    const [itemPerPage, setItemPerPage] = useState(20);
     const [totalPage, setTotalPage] = useState(0);
-    const [searchQuery, setSearchQuery] = useState<UserRequest>({});
+    const [searchQuery] = useState<UserRequest>({});
 
     const { setLoading } = useLoading();
 
@@ -30,10 +28,8 @@ const UsersList = () => {
         setLoading(true);
         const query: UserRequest = { ...searchQuery, page: currentPage };
         const response: UserResponse = await getUsers(query);
-        const { status, message, body  } = response;
+        const { body } = response;
         setUserList(Array.isArray(body.items) ? body.items : body.items ? [body.items] : []);
-        setTotalItemCount(body.totalItemCount || 0);
-        setItemPerPage(body.itemPerPage || 20);
         setTotalPage(body.totalPage || 0);
         setLoading(false);
     };

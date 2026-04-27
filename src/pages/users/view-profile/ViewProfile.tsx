@@ -4,15 +4,12 @@ import Breadcrumb from "@/layouts/Breadcrumb";
 import EditProfileTabContent from "./components/EditProfileTabContent";
 import ViewProfileSidebar from "./components/ViewProfileSidebar";
 import ChangePasswordTabContent from "./components/ChangePasswordTabContent";
-import NotificationPasswordTabContent from "./components/NotificationPasswordTabContent";
-import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import type { UserType } from "@/types/user";
 import { useEffect, useState } from "react";
 import { getUserById } from "@/apis/users-service";
-import { is } from "date-fns/locale";
 
 const ViewProfile = () => {
-    const navigate = useNavigate();
     const [params] = useSearchParams();
     const userId = params.get("userId");
     const isConnectedUser = params.get("isconnecteduser");
@@ -22,10 +19,12 @@ const ViewProfile = () => {
     // }
     const [user, setUser] = useState<UserType>({} as UserType);
     const fetchUserData = async (id: string) => {
-        if (isConnectedUser)
+        if (isConnectedUser) {
             setUser(JSON.parse(localStorage.getItem("user") || "{}"));
+            return;
+        }
 
-        const response = await getUserById(parseInt(id));
+        const response = await getUserById({ id: parseInt(id, 10) });
         console.log(response);
         if (response.status === 1 && response.body) {
             setUser(response.body as any);

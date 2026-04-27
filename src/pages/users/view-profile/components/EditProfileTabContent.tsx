@@ -6,7 +6,7 @@ import { handleProfileUpdate } from './actions/handleProfileUpdate';
 import AvatarUpload from './AvatarUpload';
 import type { UserType } from '@/types/user';
 
-const EditProfileTabContent = ({ user }: { user: UserType }) => {
+const EditProfileTabContent = ({ user: _user }: { user: UserType }) => {
     return (
         <div>
             <h6 className="text-base text-neutral-600 dark:text-neutral-200 mb-4">Profile Image</h6>

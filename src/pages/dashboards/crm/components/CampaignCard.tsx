@@ -1,6 +1,6 @@
 import CustomSelect from '@/components/shared/CustomSelect';
 import { Card, CardContent } from '@/components/ui/card';
-import { Earth, Facebook, Mail, MapPinOff } from 'lucide-react';
+import { Earth, Mail, MapPinOff, Users } from 'lucide-react';
 
 const CampaignCard = () => {
   return (
@@ -52,7 +52,7 @@ const CampaignCard = () => {
           <div className="flex items-center justify-between gap-3 not-last:mb-5.5">
             <div className="flex items-center">
               <span className="text-2xl line-height-1 flex align-content-center shrink-0 text-primary dark:text-primary">
-                <Facebook />
+                <Users />
               </span>
               <span className="text-neutral-600 dark:text-neutral-200 font-medium text-sm ps-4">Facebook</span>
             </div>

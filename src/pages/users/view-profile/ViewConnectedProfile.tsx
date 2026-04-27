@@ -4,8 +4,7 @@ import Breadcrumb from "@/layouts/Breadcrumb";
 import EditProfileTabContent from "./components/EditProfileTabContent";
 import ViewProfileSidebar from "./components/ViewProfileSidebar";
 import ChangePasswordTabContent from "./components/ChangePasswordTabContent";
-import NotificationPasswordTabContent from "./components/NotificationPasswordTabContent";
-import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import type { UserType } from "@/types/user";
 import { useEffect, useState } from "react";
 
@@ -13,18 +12,16 @@ import { useEffect, useState } from "react";
 const ViewConnectedProfile = () => {
     const [user, setUser] = useState<UserType>({} as UserType);
 
-    const navigate = useNavigate();
     const [params] = useSearchParams();
     const userId = params.get("userId");
     const connectedUser = JSON.parse(localStorage.getItem("user") || "{}") as UserType;
     // if (!connectedUser || Object.keys(connectedUser).length === 0) {
     //     return <Navigate to="/auth/login" />;
     // }
-    const fetchUserData = async (id: string) => {
-         setUser(connectedUser);
-    }
     useEffect(() => {
-        userId && fetchUserData(userId);
+        if (userId) {
+            setUser(connectedUser);
+        }
     }, []);
 
     return (

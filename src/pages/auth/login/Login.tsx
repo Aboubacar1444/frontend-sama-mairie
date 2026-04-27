@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { useIsSubmitting } from "@/context/isSubmittingContext";
-import { loginWithEmailAndPassword } from "@/firebase";
 import { Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react';
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";

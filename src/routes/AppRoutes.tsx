@@ -2,6 +2,7 @@ import ForgotPassword from "@/pages/auth/forgot-password/ForgotPassword";
 import Login from "@/pages/auth/login/Login";
 import Register from "@/pages/auth/register/Register";
 import BasicTable from "@/pages/basic-table/BasicTable";
+import BusinessList from "@/pages/business/BusinessList";
 import Calendar from "@/pages/calendar/Calendar";
 import ColumnChartPage from "@/pages/chart/column-chart/ColumnChartPage";
 import LineChartPage from "@/pages/chart/line-chart/LineChartPage";
@@ -31,6 +32,7 @@ import InputLayout from "@/pages/forms/input-layout/InputLayout";
 import Company from "@/pages/setting/company/Company";
 import NotificationAlert from "@/pages/setting/notification-alert/NotificationAlert";
 import SettingsNotification from "@/pages/setting/settings-notification/SettingsNotification";
+import TaxesList from "@/pages/taxes/TaxesList";
 import UsersGrid from "@/pages/users/users-grid/UsersGrid";
 import UsersList from "@/pages/users/UsersList";
 import ViewProfile from "@/pages/users/view-profile/ViewProfile";
@@ -217,6 +219,12 @@ export const router = createBrowserRouter([
           },
           {
             path: "users-list", element: <UsersList />
+          },
+          {
+            path: "business-list", element: <BusinessList />
+          },
+          {
+            path: "taxes-list", element: <TaxesList />
           },
           {
             path: "users-grid", element: <UsersGrid />

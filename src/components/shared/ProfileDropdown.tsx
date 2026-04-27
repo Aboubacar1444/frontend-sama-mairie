@@ -5,11 +5,11 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { auth, getUserProfile } from "@/firebase";
+import { auth } from "@/firebase";
 import { cn } from "@/lib/utils";
+import { PageLoader } from "@/loading/PageLoader";
 import type { UserType } from "@/types/user";
-import { signOut } from "firebase/auth";
-import { Loader2, LogOutIcon, Mail, Settings, User } from "lucide-react";
+import { LogOutIcon, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, useNavigate } from "react-router-dom";
@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 const ProfileDropdown = () => {
   const navigate = useNavigate();
   const [loggingOut, setLoggingOut] = useState(false);
+  const token = localStorage.getItem("token");
   const [user, loading, error] = useAuthState(auth);
   const [profile, setProfile] = useState<UserType | null>(null);
   
@@ -44,16 +45,11 @@ const ProfileDropdown = () => {
   }, []);
 
 
-  if (loading) {
-    return (
-     <div className="fixed inset-0 flex flex-col items-center justify-center bg-background z-50">
-           <Loader2 className="h-11 w-11 animate-spin text-neutral-900" />
-           <p className="mt-4 text-neutral-900 font-semibold animate-pulse text-xl">Loading...</p>
-         </div>
-    );
+  if (loading && !token) {
+    return <PageLoader />;
   }
 
-  if (error) {
+  if (error && !token) {
     return (
       <div>
         <p>{`Error: ${error}`}</p>
