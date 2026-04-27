@@ -88,7 +88,7 @@ const ProfileDropdown = () => {
               {profile?.firstname || user?.displayName || "User Name"}
             </h6>
             <span className="text-sm text-neutral-500 dark:text-neutral-300">
-              Admin
+              { profile?.roles[0]}
             </span>
           </div>
         </div>

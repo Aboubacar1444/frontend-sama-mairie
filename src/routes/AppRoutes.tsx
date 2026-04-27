@@ -46,6 +46,8 @@ import Typography from './../pages/components-pages/typography/Typography';
 import GuestRoutes from "./GuestRoutes";
 import ProtectedRoutes from "./ProtectedRoutes";
 import ViewConnectedProfile from "@/pages/users/view-profile/ViewConnectedProfile";
+import CategoriesList from "@/pages/categories/CategoriesList";
+import OwnersList from "@/pages/owners/OwnersList";
 const Booking = lazy(() => import("@/pages/dashboards/booking/Booking"));
 const Finance = lazy(() => import("@/pages/dashboards/finance/Finance"));
 const Analytics = lazy(() => import("@/pages/dashboards/analytics/Analytics"));
@@ -243,10 +245,10 @@ export const router = createBrowserRouter([
           },
           // MY ROUTES //
           {
-            path:"categories", element: <Navigate to="/dashboard" replace />
+            path:"categories-list", element: <CategoriesList />
           },
           {
-            path:"category/:id", element: <Navigate to="/dashboard" replace />
+            path:"owners-list", element: <OwnersList />
           },
           {
             path: "view-profile/:userId", element: <ViewProfile />

@@ -10,3 +10,27 @@ export type Owner = {
     phone: string,
     businesses: any[],
 }
+
+export type OwnerResponse = {
+    status: number,
+    message: string,
+    body: {
+        items: Owner[] | Owner | null,
+        currentPageNumber?: number,
+        totalItemCount?: number,
+        itemPerPage?: number,
+        totalPage?: number,
+    },
+    currentPageNumber?: number,
+    totalItemCount?: number,
+    itemPerPage?: number,
+    totalPage?: number,
+}
+
+export type OwnerRequest = {
+    id?:number,
+    phone?: string,
+    nationalID?: string,
+    page?: number,
+    limit?: number,
+}
