@@ -62,6 +62,9 @@ const BusinessFormDialog = ({
     onSubmit,
 }: BusinessFormDialogProps) => {
     const relationFieldsRequired = !editingBusiness;
+    const emptyCategoryLabel = editingBusiness && !form.categoryId
+        ? "Categorie actuelle non fournie"
+        : "Aucune categorie";
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -100,10 +103,10 @@ const BusinessFormDialog = ({
                                 >
                                     <SelectValue placeholder={isFetchingCategories ? "Chargement..." : "Selectionner"} />
                                 </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="none">Aucune categorie</SelectItem>
+                                <SelectContent translate="no">
+                                    <SelectItem value="none" translate="no">{emptyCategoryLabel}</SelectItem>
                                     {categories.map((category) => (
-                                        <SelectItem key={category.id} value={String(category.id)}>
+                                        <SelectItem key={category.id} value={String(category.id)} translate="no">
                                             {category.name}
                                         </SelectItem>
                                     ))}
@@ -125,10 +128,10 @@ const BusinessFormDialog = ({
                                 >
                                     <SelectValue placeholder={isFetchingTaxes ? "Chargement..." : "Selectionner"} />
                                 </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="none">Aucune taxe</SelectItem>
+                                <SelectContent translate="no">
+                                    <SelectItem value="none" translate="no">Aucune taxe</SelectItem>
                                     {taxes.map((taxe) => (
-                                        <SelectItem key={taxe.id} value={String(taxe.id)}>
+                                        <SelectItem key={taxe.id} value={String(taxe.id)} translate="no">
                                             {taxe.title} - {formatAmount(taxe.amount, taxe.currency)}
                                         </SelectItem>
                                     ))}

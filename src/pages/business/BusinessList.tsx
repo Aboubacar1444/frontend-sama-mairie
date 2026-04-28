@@ -1,5 +1,5 @@
-import { getCategories, type CategoriesResponse } from "@/apis/categories-service";
 import { deleteBusiness, getBusinesses, updateBusiness, type BusinessResponse } from "@/apis/business-service";
+import { getCategories } from "@/apis/categories-service";
 import { getTaxes, type TaxesResponse } from "@/apis/taxes-service";
 import LazyWrapper from "@/components/LazyWrapper";
 import BusinessListTable from "@/components/tables/BusinessListTable";
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 import { useLoading } from "@/context/LoadingContext";
 import Breadcrumb from "@/layouts/Breadcrumb";
-import type { Category } from "@/types/category";
+import type { Category, CategoryResponse } from "@/types/category";
 import type { Business as BusinessType } from "@/types/business";
 import type { Taxe } from "@/types/taxes";
 import {
@@ -37,6 +37,7 @@ import {
     businessToForm,
     emptyBusinessForm,
     getOwnerName,
+    getErrorMessage,
     isValidBusinessForm,
     toBusinessUpdatePayload,
     type BusinessFormValues,
@@ -79,7 +80,7 @@ const getBusinessPagination = (response: BusinessResponse) => {
     };
 };
 
-const getCategoriesItems = (response: CategoriesResponse): Category[] => {
+const getCategoriesItems = (response: CategoryResponse): Category[] => {
     const { body } = response;
 
     if (Array.isArray(body)) {
@@ -115,6 +116,14 @@ const getTaxesItems = (response: TaxesResponse): Taxe[] => {
     }
 
     return [body as Taxe];
+};
+
+const getTaxeCategoryId = (taxe: Taxe): string => {
+    if (Array.isArray(taxe.category)) {
+        return taxe.category[0]?.id ? String(taxe.category[0].id) : "";
+    }
+
+    return taxe.category?.id ? String(taxe.category.id) : "";
 };
 
 const BusinessList = () => {
@@ -180,7 +189,10 @@ const BusinessList = () => {
         setIsFetchingCategories(true);
 
         try {
-            const response = await getCategories();
+            const response = await getCategories({
+                page: 1,
+                limit: 100,
+            });
 
             if (response.status === 1) {
                 setCategories(getCategoriesItems(response));
@@ -297,9 +309,13 @@ const BusinessList = () => {
     };
 
     const handleTaxeChange = (taxesId: string) => {
+        const selectedTaxe = taxes.find((taxe) => String(taxe.id) === taxesId);
+        const selectedTaxeCategoryId = selectedTaxe ? getTaxeCategoryId(selectedTaxe) : "";
+
         setForm((currentForm) => ({
             ...currentForm,
             taxesId: taxesId === "none" ? "" : taxesId,
+            categoryId: selectedTaxeCategoryId || currentForm.categoryId,
         }));
     };
 
@@ -370,8 +386,8 @@ const BusinessList = () => {
 
             handleFormOpenChange(false);
             await refreshBusinesses();
-        } catch {
-            toast.error("L'operation a echoue.");
+        } catch (error) {
+            toast.error(getErrorMessage(error));
         } finally {
             setIsSubmitting(false);
         }

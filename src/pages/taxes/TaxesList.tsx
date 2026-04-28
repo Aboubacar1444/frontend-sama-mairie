@@ -1,4 +1,4 @@
-import { getCategories, type CategoriesResponse } from "@/apis/categories-service";
+import { getCategories } from "@/apis/categories-service";
 import { createTaxe, deleteTaxe, getTaxes, updateTaxe, type TaxesResponse } from "@/apis/taxes-service";
 import LazyWrapper from "@/components/LazyWrapper";
 import TaxesListTable from "@/components/tables/TaxesListTable";
@@ -19,7 +19,7 @@ import {
 import { useLoading } from "@/context/LoadingContext";
 import Breadcrumb from "@/layouts/Breadcrumb";
 import { cn } from "@/lib/utils";
-import type { Category } from "@/types/category";
+import type { Category, CategoryResponse } from "@/types/category";
 import type { Taxe } from "@/types/taxes";
 import {
     ChevronLeft,
@@ -82,7 +82,7 @@ const getTaxesPagination = (response: TaxesResponse) => {
     };
 };
 
-const getCategoriesItems = (response: CategoriesResponse): Category[] => {
+const getCategoriesItems = (response: CategoryResponse): Category[] => {
     const { body } = response;
 
     if (Array.isArray(body)) {

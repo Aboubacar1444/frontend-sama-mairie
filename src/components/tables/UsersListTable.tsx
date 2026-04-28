@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {type UserType} from "@/types/user";
 
@@ -12,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Edit, Eye, Trash2 } from "lucide-react";
 import { formatDateToFrench } from "@/utils/date-formatter";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
@@ -38,7 +37,6 @@ export default function UsersListTable({userList}: {userList?: UserType[]}) {
             <TableBody>
                 {userList?.map((user, index) => {
                     const isLast = index === userList.length - 1;
-                    const userStatus = user.isOnline ? "Actif" : "Inactif";
                     return (
                         <TableRow key={user.id}>
                             <TableCell
@@ -91,14 +89,14 @@ export default function UsersListTable({userList}: {userList?: UserType[]}) {
                                     }`}
                             >
                                 <span
-                                    className={`px-3 py-1.5 rounded text-sm font-medium border ${userStatus === "Actif"
+                                    className={`px-3 py-1.5 rounded text-sm font-medium border ${user.status === "Active"
                                         ? "bg-green-600/15 text-green-600 border-green-600"
-                                        : userStatus === "Inactif" 
+                                        : user.status === "Inactif" 
                                         ? "bg-gray-600/15 text-gray-600 dark:text-white border-gray-400"
                                         : "bg-red-600/15 text-red-600 border-red-600"
                                         }`}
                                 >
-                                    {userStatus}
+                                    {user.status}
                                 </span>
                             </TableCell>
                             <TableCell
