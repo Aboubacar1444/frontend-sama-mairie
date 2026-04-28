@@ -58,7 +58,7 @@ const TaxesFormDialog = ({
                     <DialogHeader className="border-b border-neutral-200 dark:border-slate-600 p-6">
                         <DialogTitle>{editingTaxe ? "Modifier la taxe" : "Creer une taxe"}</DialogTitle>
                         <DialogDescription>
-                            Renseignez les informations attendues par l'API taxes.
+                            Renseignez les informations attendues pour la creation de la taxe.
                         </DialogDescription>
                     </DialogHeader>
 

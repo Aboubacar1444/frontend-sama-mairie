@@ -1,5 +1,4 @@
 import { deleteBusiness, getBusinesses, updateBusiness, type BusinessResponse } from "@/apis/business-service";
-import { getCategories } from "@/apis/categories-service";
 import { getTaxes, type TaxesResponse } from "@/apis/taxes-service";
 import LazyWrapper from "@/components/LazyWrapper";
 import BusinessListTable from "@/components/tables/BusinessListTable";
@@ -18,7 +17,6 @@ import {
 } from "@/components/ui/select";
 import { useLoading } from "@/context/LoadingContext";
 import Breadcrumb from "@/layouts/Breadcrumb";
-import type { Category, CategoryResponse } from "@/types/category";
 import type { Business as BusinessType } from "@/types/business";
 import type { Taxe } from "@/types/taxes";
 import {
@@ -80,25 +78,6 @@ const getBusinessPagination = (response: BusinessResponse) => {
     };
 };
 
-const getCategoriesItems = (response: CategoryResponse): Category[] => {
-    const { body } = response;
-
-    if (Array.isArray(body)) {
-        return body;
-    }
-
-    if (!body) {
-        return [];
-    }
-
-    if (typeof body === "object" && "items" in body) {
-        const items = body.items;
-        return Array.isArray(items) ? items : items ? [items] : [];
-    }
-
-    return [body as Category];
-};
-
 const getTaxesItems = (response: TaxesResponse): Taxe[] => {
     const { body } = response;
 
@@ -118,17 +97,8 @@ const getTaxesItems = (response: TaxesResponse): Taxe[] => {
     return [body as Taxe];
 };
 
-const getTaxeCategoryId = (taxe: Taxe): string => {
-    if (Array.isArray(taxe.category)) {
-        return taxe.category[0]?.id ? String(taxe.category[0].id) : "";
-    }
-
-    return taxe.category?.id ? String(taxe.category.id) : "";
-};
-
 const BusinessList = () => {
     const [businesses, setBusinesses] = useState<BusinessType[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
     const [taxes, setTaxes] = useState<Taxe[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
@@ -136,10 +106,10 @@ const BusinessList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
     const [isFetching, setIsFetching] = useState(false);
-    const [isFetchingCategories, setIsFetchingCategories] = useState(false);
     const [isFetchingTaxes, setIsFetchingTaxes] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [updatingDeclaredIds, setUpdatingDeclaredIds] = useState<number[]>([]);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -185,29 +155,6 @@ const BusinessList = () => {
         void refreshBusinesses();
     }, [refreshBusinesses]);
 
-    const refreshCategories = useCallback(async () => {
-        setIsFetchingCategories(true);
-
-        try {
-            const response = await getCategories({
-                page: 1,
-                limit: 100,
-            });
-
-            if (response.status === 1) {
-                setCategories(getCategoriesItems(response));
-            } else {
-                setCategories([]);
-                toast.error(response.message || "Impossible de charger les categories.");
-            }
-        } catch {
-            setCategories([]);
-            toast.error("Impossible de charger les categories.");
-        } finally {
-            setIsFetchingCategories(false);
-        }
-    }, []);
-
     const refreshTaxes = useCallback(async () => {
         setIsFetchingTaxes(true);
 
@@ -233,9 +180,8 @@ const BusinessList = () => {
     }, []);
 
     useEffect(() => {
-        void refreshCategories();
         void refreshTaxes();
-    }, [refreshCategories, refreshTaxes]);
+    }, [refreshTaxes]);
 
     useEffect(() => {
         setCurrentPage(1);
@@ -301,21 +247,10 @@ const BusinessList = () => {
         }));
     };
 
-    const handleCategoryChange = (categoryId: string) => {
-        setForm((currentForm) => ({
-            ...currentForm,
-            categoryId: categoryId === "none" ? "" : categoryId,
-        }));
-    };
-
     const handleTaxeChange = (taxesId: string) => {
-        const selectedTaxe = taxes.find((taxe) => String(taxe.id) === taxesId);
-        const selectedTaxeCategoryId = selectedTaxe ? getTaxeCategoryId(selectedTaxe) : "";
-
         setForm((currentForm) => ({
             ...currentForm,
             taxesId: taxesId === "none" ? "" : taxesId,
-            categoryId: selectedTaxeCategoryId || currentForm.categoryId,
         }));
     };
 
@@ -333,6 +268,40 @@ const BusinessList = () => {
     const handleDeleteClick = (business: BusinessType) => {
         setBusinessToDelete(business);
         setIsDeleteOpen(true);
+    };
+
+    const handleDeclaredToggle = async (business: BusinessType, checked: boolean) => {
+        setUpdatingDeclaredIds((currentIds) => [...currentIds, business.id]);
+        setBusinesses((currentBusinesses) => currentBusinesses.map((currentBusiness) => (
+            currentBusiness.id === business.id
+                ? { ...currentBusiness, is_declared: checked }
+                : currentBusiness
+        )));
+
+        try {
+            const response = await updateBusiness(business.id, { is_declared: checked });
+
+            if (response.status !== 1) {
+                setBusinesses((currentBusinesses) => currentBusinesses.map((currentBusiness) => (
+                    currentBusiness.id === business.id
+                        ? { ...currentBusiness, is_declared: business.is_declared }
+                        : currentBusiness
+                )));
+                toast.error(response.message || "Le changement de statut a echoue.");
+                return;
+            }
+
+            toast.success(response.message || "Statut du business mis a jour.");
+        } catch (error) {
+            setBusinesses((currentBusinesses) => currentBusinesses.map((currentBusiness) => (
+                currentBusiness.id === business.id
+                    ? { ...currentBusiness, is_declared: business.is_declared }
+                    : currentBusiness
+            )));
+            toast.error(getErrorMessage(error));
+        } finally {
+            setUpdatingDeclaredIds((currentIds) => currentIds.filter((id) => id !== business.id));
+        }
     };
 
     const handleFormOpenChange = (open: boolean) => {
@@ -438,7 +407,7 @@ const BusinessList = () => {
 
     return (
         <>
-            <Breadcrumb title="Liste des business" text="Business" />
+            <Breadcrumb title="Liste des activités" text="Activités" />
 
             <LazyWrapper>
                 <Card className="card h-full !p-0 !block border-0 overflow-hidden mb-6">
@@ -460,7 +429,7 @@ const BusinessList = () => {
 
                             <InputGroup className="border border-neutral-300 dark:border dark:border-slate-600 !bg-transparent shadow-none md:flex hidden max-w-[280px]">
                                 <InputGroupInput
-                                    placeholder="Rechercher un business..."
+                                    placeholder="Rechercher une activité..."
                                     value={searchTerm}
                                     onChange={(event) => setSearchTerm(event.target.value)}
                                 />
@@ -491,6 +460,8 @@ const BusinessList = () => {
                             onDetailsClick={handleDetailsClick}
                             onEditClick={handleEditClick}
                             onDeleteClick={handleDeleteClick}
+                            onDeclaredToggle={handleDeclaredToggle}
+                            updatingDeclaredIds={updatingDeclaredIds}
                         />
 
                         {totalPage > 0 && (
@@ -555,19 +526,12 @@ const BusinessList = () => {
                 open={isFormOpen}
                 onOpenChange={handleFormOpenChange}
                 form={form}
-                categories={categories}
                 taxes={taxes}
                 editingBusiness={editingBusiness}
                 isSubmitting={isSubmitting}
-                isFetchingCategories={isFetchingCategories}
                 isFetchingTaxes={isFetchingTaxes}
                 onInputChange={handleInputChange}
-                onCategoryChange={handleCategoryChange}
                 onTaxeChange={handleTaxeChange}
-                onDeclaredChange={(checked) => setForm((currentForm) => ({
-                    ...currentForm,
-                    is_declared: checked,
-                }))}
                 onSubmit={handleSubmit}
             />
 

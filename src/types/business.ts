@@ -53,7 +53,6 @@ export type BusinessPayload = {
     nif: string | null,
     geo_coords: string | null,
     map_link: string | null,
-    categoryId: number,
     taxesId: number,
     ownerId: number,
 }

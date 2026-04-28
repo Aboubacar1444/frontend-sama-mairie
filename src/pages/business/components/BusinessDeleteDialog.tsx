@@ -29,9 +29,9 @@ const BusinessDeleteDialog = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Supprimer le business</DialogTitle>
+                    <DialogTitle>Supprimer l'activité</DialogTitle>
                     <DialogDescription>
-                        Cette action va supprimer {business?.name ?? "ce business"}.
+                        Cette action va supprimer {business?.name ?? "cette activité"}.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>

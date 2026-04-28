@@ -7,11 +7,13 @@ type BusinessStatusBadgeProps = {
 const BusinessStatusBadge = ({ isDeclared }: BusinessStatusBadgeProps) => {
     return (
         <span
+            aria-label={isDeclared ? "Déclaré" : "Non déclaré"}
+            title={isDeclared ? "Déclaré" : "Non déclaré"}
             className={cn(
-                "px-3 py-1.5 rounded text-sm font-medium border",
+                "inline-flex items-center justify-center px-3 py-1.5 rounded text-sm font-medium border whitespace-nowrap",
                 isDeclared
                     ? "bg-green-600/15 text-green-600 border-green-600"
-                    : "bg-gray-600/15 text-gray-600 dark:text-white border-gray-400",
+                    : "bg-red-600/15 text-red-600 border-red-600",
             )}
         >
             {isDeclared ? "Déclaré" : "Non déclaré"}

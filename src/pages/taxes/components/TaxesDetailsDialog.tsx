@@ -26,7 +26,7 @@ const TaxesDetailsDialog = ({
                 <DialogHeader>
                     <DialogTitle>Details de la taxe</DialogTitle>
                     <DialogDescription>
-                        Informations recues depuis l'API taxes.
+                    
                     </DialogDescription>
                 </DialogHeader>
 

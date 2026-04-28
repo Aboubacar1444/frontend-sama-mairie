@@ -15,7 +15,6 @@ export type BusinessFormValues = {
     nif: string,
     geo_coords: string,
     map_link: string,
-    categoryId: string,
     taxesId: string,
     ownerId: string,
 };
@@ -33,7 +32,6 @@ export const emptyBusinessForm: BusinessFormValues = {
     nif: "",
     geo_coords: "",
     map_link: "",
-    categoryId: "",
     taxesId: "",
     ownerId: "",
 };
@@ -65,7 +63,6 @@ export const toBusinessPayload = (form: BusinessFormValues): BusinessPayload => 
         nif: toNullable(form.nif),
         geo_coords: toNullable(form.geo_coords),
         map_link: toNullable(form.map_link),
-        categoryId: Number(form.categoryId),
         taxesId: Number(form.taxesId),
         ownerId: Number(form.ownerId),
     };
@@ -75,7 +72,6 @@ export const toBusinessUpdatePayload = (form: BusinessFormValues): BusinessUpdat
     const payload: BusinessUpdatePayload = {
         name: form.name.trim(),
         type: form.type.trim(),
-        is_declared: form.is_declared,
     };
 
     if (form.description.trim()) {
@@ -110,24 +106,14 @@ export const toBusinessUpdatePayload = (form: BusinessFormValues): BusinessUpdat
         payload.map_link = form.map_link.trim();
     }
 
-    if (form.categoryId) {
-        payload.categoryId = Number(form.categoryId);
-    }
-
     if (form.taxesId) {
         payload.taxesId = Number(form.taxesId);
-    }
-
-    if (form.ownerId) {
-        payload.ownerId = Number(form.ownerId);
     }
 
     return payload;
 };
 
 export const businessToForm = (business: BusinessType): BusinessFormValues => {
-    const taxeCategory = getBusinessTaxeCategory(business);
-
     return {
         name: business.name ?? "",
         description: business.description ?? "",
@@ -141,7 +127,6 @@ export const businessToForm = (business: BusinessType): BusinessFormValues => {
         nif: business.nif ?? "",
         geo_coords: business.geo_coords ?? "",
         map_link: business.map_link ?? "",
-        categoryId: taxeCategory?.id ? String(taxeCategory.id) : "",
         taxesId: business.taxe?.id ? String(business.taxe.id) : "",
         ownerId: business.owner?.id ? String(business.owner.id) : "",
     };
@@ -166,7 +151,6 @@ export const isValidBusinessForm = (form: BusinessFormValues, isUpdate = false):
         form.name.trim()
         && form.type.trim()
         && form.creation_date
-        && form.categoryId
         && form.taxesId
         && form.ownerId
     );

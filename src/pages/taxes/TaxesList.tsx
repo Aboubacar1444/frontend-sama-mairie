@@ -32,7 +32,7 @@ import {
 import { useCallback, useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { toast } from "react-toastify";
 import TaxesDeleteDialog from "./components/TaxesDeleteDialog";
-import TaxesDetailsDialog from "./components/TaxesDetailsDialog";
+// import TaxesDetailsDialog from "./components/TaxesDetailsDialog";
 import TaxesFormDialog from "./components/TaxesFormDialog";
 import {
     emptyTaxeForm,
@@ -114,11 +114,11 @@ const TaxesList = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+    // const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [form, setForm] = useState<TaxeFormValues>(emptyTaxeForm);
     const [editingTaxe, setEditingTaxe] = useState<Taxe | null>(null);
-    const [selectedTaxe, setSelectedTaxe] = useState<Taxe | null>(null);
+    // const [selectedTaxe, setSelectedTaxe] = useState<Taxe | null>(null);
     const [taxeToDelete, setTaxeToDelete] = useState<Taxe | null>(null);
 
     const { setLoading } = useLoading();
@@ -264,10 +264,12 @@ const TaxesList = () => {
         setIsFormOpen(true);
     };
 
+    /*
     const handleDetailsClick = (taxe: Taxe) => {
         setSelectedTaxe(taxe);
         setIsDetailsOpen(true);
     };
+    */
 
     const handleDeleteClick = (taxe: Taxe) => {
         setTaxeToDelete(taxe);
@@ -282,6 +284,7 @@ const TaxesList = () => {
         }
     };
 
+    /*
     const handleDetailsOpenChange = (open: boolean) => {
         setIsDetailsOpen(open);
 
@@ -289,6 +292,7 @@ const TaxesList = () => {
             setSelectedTaxe(null);
         }
     };
+    */
 
     const handleDeleteOpenChange = (open: boolean) => {
         setIsDeleteOpen(open);
@@ -432,7 +436,6 @@ const TaxesList = () => {
                         <TaxesListTable
                             taxeList={filteredTaxes}
                             isLoading={isFetching}
-                            onDetailsClick={handleDetailsClick}
                             onEditClick={handleEditClick}
                             onDeleteClick={handleDeleteClick}
                         />
@@ -508,11 +511,13 @@ const TaxesList = () => {
                 onSubmit={handleSubmit}
             />
 
+            {/*
             <TaxesDetailsDialog
                 open={isDetailsOpen}
                 onOpenChange={handleDetailsOpenChange}
                 taxe={selectedTaxe}
             />
+            */}
 
             <TaxesDeleteDialog
                 open={isDeleteOpen}
